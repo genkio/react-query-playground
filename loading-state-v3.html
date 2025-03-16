@@ -155,6 +155,12 @@
             <button onClick={() => queryClient.invalidateQueries(['data'])}>
               Invalidate Query
             </button>
+            <button onClick={() => {
+              queryClient.removeQueries(['data']);
+              if (enabled) refetch();
+            }}>
+              Reset Cache
+            </button>
           </div>
 
           <div className="container">
