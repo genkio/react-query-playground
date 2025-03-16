@@ -112,7 +112,6 @@
     // Demo Component
     const QueryDemo = () => {
       const [enabled, setEnabled] = useState(false);
-      const [counter, setCounter] = useState(0);
 
       // Query with the enabled flag
       const {
@@ -123,14 +122,7 @@
         fetchStatus,
         status,
         error
-      } = useQuery(
-        ['data', counter],
-        fetchData,
-        {
-          enabled: enabled,
-          staleTime: 5000
-        }
-      );
+      } = useQuery(['data'], fetchData, { enabled, staleTime: 5000 });
 
       // Auto refetch every 3 seconds
       const [autoRefetch, setAutoRefetch] = useState(false);
@@ -139,7 +131,7 @@
         let interval;
         if (autoRefetch) {
           interval = setInterval(() => {
-            setCounter(prev => prev + 1);
+            refetch();
           }, 3000);
         }
         return () => clearInterval(interval);
@@ -160,7 +152,7 @@
             <button onClick={() => setAutoRefetch(!autoRefetch)}>
               {autoRefetch ? 'Stop Auto Refetch' : 'Start Auto Refetch (3s)'}
             </button>
-            <button onClick={() => queryClient.invalidateQueries(['data', counter])}>
+            <button onClick={() => queryClient.invalidateQueries(['data'])}>
               Invalidate Query
             </button>
           </div>
@@ -173,7 +165,6 @@
               <StatusIndicator label="enabled" value={enabled} />
               <p><strong>Status:</strong> {status}</p>
               <p><strong>Fetch Status:</strong> {fetchStatus}</p>
-              <p><strong>Counter:</strong> {counter}</p>
               <p><strong>Auto Refetch:</strong> {autoRefetch ? 'On' : 'Off'}</p>
             </div>
           </div>
